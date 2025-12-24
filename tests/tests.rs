@@ -1,3 +1,5 @@
+#![allow(clippy::vec_box, clippy::box_collection)]
+
 use ring_buffer_macro::ring_buffer;
 use std::rc::Rc;
 use std::sync::Arc;
