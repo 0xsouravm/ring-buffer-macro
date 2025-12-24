@@ -1,0 +1,20 @@
+[package]
+name = "ring-buffer-macro"
+version = "0.1.0"
+edition = "2021"
+authors = ["Sourav Mishra <sourav.m.bt@gmail.com>"]
+description = "A procedural macro for creating ring buffer (circular buffer) data structures at compile time"
+documentation = "https://docs.rs/ring-buffer-macro"
+repository = "https://github.com/0xsouravm/ring-buffer-macro"
+license = "MIT"
+keywords = ["ring-buffer", "circular-buffer", "macro", "procedural-macro", "data-structure"]
+categories = ["data-structures", "rust-patterns", "development-tools::procedural-macro-helpers"]
+readme = "README.md"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "2.0", features = ["full", "extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0"
