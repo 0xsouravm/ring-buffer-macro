@@ -1,13 +1,12 @@
 use proc_macro2::Span;
 use syn::Error as SynError;
 
-/// Custom error type for ring buffer macro
+// Spans point errors at user code
 #[derive(Debug)]
 pub enum Error {
     NotAStruct(Span),
-    NotNamedFields(Span),
-    MissingDataField(Span),
-    InvalidDataFieldType(Span),
+    NotTupleStruct(Span),
+    InvalidTupleStruct(Span),
     Syn(SynError),
 }
 
@@ -16,16 +15,12 @@ impl Error {
         Error::NotAStruct(span)
     }
 
-    pub fn not_named_fields(span: Span) -> Self {
-        Error::NotNamedFields(span)
+    pub fn not_tuple_struct(span: Span) -> Self {
+        Error::NotTupleStruct(span)
     }
 
-    pub fn missing_data_field(span: Span) -> Self {
-        Error::MissingDataField(span)
-    }
-
-    pub fn invalid_data_field_type(span: Span) -> Self {
-        Error::InvalidDataFieldType(span)
+    pub fn invalid_tuple_struct(span: Span) -> Self {
+        Error::InvalidTupleStruct(span)
     }
 
     pub fn to_compile_error(&self) -> proc_macro2::TokenStream {
@@ -33,17 +28,14 @@ impl Error {
             Error::NotAStruct(span) => {
                 SynError::new(*span, "ring_buffer can only be applied to structs")
             }
-            Error::NotNamedFields(span) => SynError::new(
+            Error::NotTupleStruct(span) => SynError::new(
                 *span,
-                "ring_buffer only works with structs with named fields",
+                "ring_buffer requires a tuple struct with one type, e.g., struct Buffer(i32);",
             ),
-            Error::MissingDataField(span) => SynError::new(
+            Error::InvalidTupleStruct(span) => SynError::new(
                 *span,
-                "ring_buffer requires a field named 'data' of type Vec<T>",
+                "ring_buffer tuple struct must have exactly one field, e.g., struct Buffer(i32);",
             ),
-            Error::InvalidDataFieldType(span) => {
-                SynError::new(*span, "data field must be of type Vec<T>")
-            }
             Error::Syn(err) => return err.to_compile_error(),
         };
         error.to_compile_error()
