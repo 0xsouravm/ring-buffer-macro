@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/crates/l/ring-buffer-macro?style=flat-square)](LICENSE)
 [![Website](https://img.shields.io/badge/website-ringbuf.dev-F97316?style=flat-square)](https://ringbuf.dev)
 
+![ring-buffer-macro](assets/og.png)
+
 A proc macro that turns a tuple struct into a fixed-size ring buffer. Supports single-threaded, lock-free SPSC, and lock-free MPSC modes.
 
 ```toml
